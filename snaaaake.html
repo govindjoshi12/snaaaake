@@ -34,19 +34,22 @@
     var cursors;
     var currSpeed;
     var currDir;
+    var time;
 
     function preload ()
     {
       this.load.image('snake', 'assets/snake.png')
-      this.load.
+      this.load.image('pill', 'assets/pill.png')
     }
 
     function create ()
     {
-        player = this.physics.add.image(Math.random() * 800 + 1, Math.random() * 600 + 1, 'snake')
+        player = this.physics.add.image(0, 0, 'snake')
+        //pill = this.physics.add.image(Math.random() * 800 + 1, Math.random() * 600 + 1, 'pill')
         player.setCollideWorldBounds(true);
         cursors = this.input.keyboard.createCursorKeys();
         currSpeed = 250;
+        time = 100;
     }
 
     function update()
@@ -55,16 +58,12 @@
       {
         if(currDir != "right" && currDir != "left"){
           currDir = "left"
-          player.setVelocity(0);
-          player.setVelocityX(-1 * currSpeed);
         }
       }
       else if (cursors.right.isDown)
       {
         if(currDir != "left" && currDir != "right"){
           currDir = "right"
-          player.setVelocity(0);
-          player.setVelocityX(currSpeed);
         }
       }
 
@@ -72,16 +71,12 @@
       {
         if(currDir != "down" && currDir != "up"){
           currDir = "up"
-          player.setVelocity(0);
-          player.setVelocityY(-1 * currSpeed);
         }
       }
       else if (cursors.down.isDown)
       {
         if(currDir != "up" && currDir != "down"){
           currDir = "down"
-          player.setVelocity(0);
-          player.setVelocityY(currSpeed);
         }
       }
     }
