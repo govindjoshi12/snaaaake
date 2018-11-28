@@ -50,6 +50,9 @@
         cursors = this.input.keyboard.createCursorKeys();
         currSpeed = 250;
         time = 100;
+        const grid = new Grid(this, 0, 0, 800, 600, 40, 30)
+        grid.setOutlineStyle(0xff0000)
+        this.add(grid);
     }
 
     function update()
