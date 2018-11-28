@@ -23,6 +23,13 @@
         }
     };
 
+    var createMap = function (game)
+    {
+      var map = game.add.tilemap(null, 20, 20, 40, 30);
+      map.addTilesetImage('sheet-blocks');
+      return map;
+    };
+
     var game = new Phaser.Game(config);
     var player;
     var cursors;
@@ -31,14 +38,12 @@
 
     function preload ()
     {
-      this.load.image('snake', 'https://webkit.org/blog-files/color-gamut/Webkit-logo-P3.png')
-      this.load.image('block', 'assets/sprites/block.png');
+      this.load.image('snake', 'assets/snake.png')
     }
 
     function create ()
     {
-        player = this.physics.add.image(Math.random() * 800 + 1, Math.random() * 600 + 1, 'snake');
-        player.setScale(.03);
+        player = this.physics.add.image(Math.random() * 800 + 1, Math.random() * 600 + 1, 'snake')
         player.setCollideWorldBounds(true);
         cursors = this.input.keyboard.createCursorKeys();
         currSpeed = 200;
@@ -46,7 +51,6 @@
 
     function update()
     {
-
       if (cursors.left.isDown)
       {
           player.setVelocity(0);
