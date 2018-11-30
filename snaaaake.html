@@ -30,11 +30,13 @@
       function preload()
       {
         this.load.image('snake', 'assets/snake.png')
+        this.load.image('pill', 'assets/pill.png')
       }
 
       function create()
       {
         grid = this.add.grid(0, 0, 1600, 1200, 20, 20, 0x000000, 1, 0xffffff, 0.5);
+        this.add.rectangle(0, 0, 800, 600)
         var Snake = new Phaser.Class(
           {
             initialize:
@@ -46,6 +48,7 @@
                  this.body = scene.add.group();
 
                  this.head = this.body.create(x * 20, y * 20, 'snake');
+
                  this.head.setOrigin(0);
 
                  this.alive = true;
@@ -54,8 +57,8 @@
 
                  this.moveTime = 0;
 
-                 this.heading = RIGHT;
-                 this.direction = RIGHT;
+                 this.heading = null;
+                 this.direction = null;
              },
 
              update: function (time)
@@ -68,7 +71,7 @@
 
              faceLeft: function ()
              {
-                 if (this.direction === UP || this.direction === DOWN)
+                 if (this.direction === UP || this.direction === DOWN || this.direction === null)
                  {
                      this.heading = LEFT;
                  }
@@ -76,7 +79,7 @@
 
              faceRight: function ()
              {
-                 if (this.direction === UP || this.direction === DOWN)
+                 if (this.direction === UP || this.direction === DOWN || this.direction === null)
                  {
                      this.heading = RIGHT;
                  }
@@ -84,7 +87,7 @@
 
             faceUp: function ()
              {
-                 if (this.direction === LEFT || this.direction === RIGHT)
+                 if (this.direction === LEFT || this.direction === RIGHT || this.direction === null)
                  {
                      this.heading = UP;
                  }
@@ -92,7 +95,7 @@
 
              faceDown: function ()
              {
-                 if (this.direction === LEFT || this.direction === RIGHT)
+                 if (this.direction === LEFT || this.direction === RIGHT || this.direction === null)
                  {
                      this.heading = DOWN;
                  }
@@ -126,11 +129,33 @@
                  return true;
              }
 
+
          });
 
-         snake = new Snake(this, 1, 1);
+         var Pill = new Phaser.Class({
+           initialize:
 
+           function Pill(scene, x, y)
+           {
+             this.position = new Phaser.Geom.Point(x, y);
+
+             this.pills = scene.add.group();
+
+             this.pill = this.pills.create(x * 20, y * 20, "pill")
+             this.pill.setOrigin(0);
+             this.eaten = false;
+           },
+
+           consume: function(){
+             pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
+             this.destroy;
+           }
+         });
+
+         snake = new Snake(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
+         pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          cursors = this.input.keyboard.createCursorKeys();
+
      }
 
      function update (time, delta)
