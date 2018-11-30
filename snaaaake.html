@@ -57,6 +57,8 @@
 
                  this.moveTime = 0;
 
+                 this.tail = new Phaser.Geom.Point(x, y);
+
                  this.heading = null;
                  this.direction = null;
              },
@@ -123,32 +125,54 @@
               }
 
                  this.direction = this.heading;
-                 Phaser.Actions.ShiftPosition(this.body.getChildren(), this.headPosition.x * 20, this.headPosition.y * 20, 1);
+                 Phaser.Actions.ShiftPosition(this.body.getChildren(), this.headPosition.x * 20, this.headPosition.y * 20, 1, this.tail);
                  this.moveTime = time + this.speed;
-
                  return true;
+             },
+
+             grow: function(){
+               var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
+
+               newPart.setOrigin(0);
+             },
+
+
+             collideWithFood : function (pill){
+               console.log(pill.x);
+               if(this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20))
+               {
+                 pill.consume();
+                 this.grow()
+               }
              }
 
 
          });
 
          var Pill = new Phaser.Class({
+
+           Extends: Phaser.GameObjects.Image,
+
            initialize:
 
            function Pill(scene, x, y)
            {
-             this.position = new Phaser.Geom.Point(x, y);
+            Phaser.GameObjects.Image.call(this, scene)
 
-             this.pills = scene.add.group();
+            this.setTexture('pill');
+            this.setPosition(x * 20, y * 20);
+            this.setOrigin(0);
 
-             this.pill = this.pills.create(x * 20, y * 20, "pill")
-             this.pill.setOrigin(0);
-             this.eaten = false;
+            this.total = 0;
+
+            scene.children.add(this);
            },
 
            consume: function(){
-             pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
-             this.destroy;
+             var x = Phaser.Math.Between(0, 39);
+             var y = Phaser.Math.Between(0, 29);
+
+             this.setPosition(x * 20, y * 20);
            }
          });
 
@@ -182,7 +206,9 @@
              snake.faceDown();
          }
 
-         snake.update(time);
+         if(snake.update(time)){
+           snake.collideWithFood(pill);
+         }
      }
     </script>
 </body>
