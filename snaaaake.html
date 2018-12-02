@@ -22,6 +22,7 @@
       var pellet;
       var cursors;
 
+
       var UP = 0;
       var DOWN = 1;
       var LEFT = 2;
@@ -53,7 +54,7 @@
 
                  this.alive = true;
 
-                 this.speed = 100;
+                 this.speed = 75;
 
                  this.moveTime = 0;
 
@@ -138,7 +139,6 @@
 
 
              collideWithFood : function (pill){
-               console.log(pill.x);
                if(this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20))
                {
                  pill.consume();
@@ -208,6 +208,11 @@
 
          if(snake.update(time)){
            snake.collideWithFood(pill);
+         }
+
+         if(cursors.space.isDown){
+           this.input.keyboard.resetKeys()
+           snake.grow();
          }
      }
     </script>
