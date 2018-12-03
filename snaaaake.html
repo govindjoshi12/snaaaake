@@ -177,8 +177,26 @@
            }
          });
 
+         var Portal = new Phaser.Class({
+           Extends: Phaser.GameObjects.Image,
+
+           initialize:
+
+           function Portal(scene, x, y)
+           {
+             Phaser.GameObjects.Image.call(this, scene)
+
+             this.setTexture("portal")
+             this.setPosition(x * 20, y * 20)
+             this.setOrigin(0)
+
+             scene.children.add(this)
+           }
+         })
+
          snake = new Snake(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
+         portal = new Portal(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          cursors = this.input.keyboard.createCursorKeys();
 
      }
