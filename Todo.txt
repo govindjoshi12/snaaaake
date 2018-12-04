@@ -6,9 +6,9 @@
   1.2 I cannot move a Snake "backwards" ✔️
     1.2.1 If snake is moving "north", then pressing "down" doesn't do anything ✔️
   1.3 I can make the Snake Grow by 1 Snake Piece when I press SPACE key (for testing purposes) ✔️
-  1.4 When the game starts, a "collectable" randomly appears on the screen in an "open spot" 🚧 Todo: ensure open spot
-  1.5 When the snake head hits a collectable, the snake grows by 1, the collectable is removed,
-  and a new collectable is randomly placed on the screen in an open spot 🚧 Todo: ensure open spot
+  1.4 When the game starts, a "collectible" randomly appears on the screen in an "open spot" 🚧 Todo: ensure open spot
+  1.5 When the snake head hits a collectible, the snake grows by 1, the collectible is removed,
+  and a new collectible is randomly placed on the screen in an open spot 🚧 Todo: ensure open spot
   1.6 Maps can have "portals"
     1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ❌
     1.6.2 When the game starts, two matching portals will be randomly placed ❌
@@ -60,7 +60,7 @@
     7.1.1 The theme can change the sprite used for the snake ❌
     7.1.2 The theme can change the background of the map ❌
     7.1.3 The theme can change the sprite used for the walls ❌
-    7.1.4 The theme can change the sprite used for the collectables ❌
+    7.1.4 The theme can change the sprite used for the collectibles ❌
     7.1.5 The theme can change the sound effects of the game ❌
     7.1.6 The theme can change the music of the game ❌
 
