@@ -8,7 +8,7 @@
       var config = {
           type: Phaser.WEBGL,
           width: 800,
-          height: 600,
+          height: 630,
           scene: {
               preload: preload,
               create: create,
@@ -21,7 +21,7 @@
       var snake;
       var pellet;
       var cursors;
-
+      var scoreText;
 
       var UP = 0;
       var DOWN = 1;
@@ -37,8 +37,11 @@
 
       function create()
       {
-        grid = this.add.grid(0, 0, 1600, 1200, 20, 20, 0x000000, 1, 0xffffff, 0.5);
+        grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
+        grid.setOrigin(0);
         this.add.rectangle(0, 0, 800, 600)
+
+
         var Snake = new Phaser.Class(
           {
             initialize:
@@ -55,11 +58,13 @@
 
                  this.alive = true;
 
-                 this.speed = 75;
+                 this.speed = 100;
 
                  this.moveTime = 0;
 
                  this.tail = new Phaser.Geom.Point(x, y);
+
+                 this.score = 0
 
                  this.heading = null;
                  this.direction = null;
@@ -134,8 +139,9 @@
 
              grow: function(){
                var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
-
+               this.score += 1
                newPart.setOrigin(0);
+               scoreText.setText('Score: ' + snake.score)
              },
 
 
@@ -144,6 +150,7 @@
                {
                  pill.consume();
                  this.grow()
+
                }
              }
 
@@ -194,11 +201,14 @@
            }
          })
 
+
+
          snake = new Snake(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          portal = new Portal(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          cursors = this.input.keyboard.createCursorKeys();
-
+         toDisplay = "Score: " + snake.score
+         scoreText = this.add.text(16, 600, toDisplay, { fontSize: '32px'})
      }
 
      function update (time, delta)
