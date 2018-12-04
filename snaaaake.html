@@ -20,6 +20,8 @@
       var grid;
       var snake;
       var pellet;
+      var portal;
+      var portal2;
       var cursors;
 
 
@@ -55,7 +57,7 @@
 
                  this.alive = true;
 
-                 this.speed = 75;
+                 this.speed = 200;
 
                  this.moveTime = 0;
 
@@ -145,9 +147,20 @@
                  pill.consume();
                  this.grow()
                }
+             },
+
+             collideWithPortal: function(portal)
+             {
+               if(this.headPosition.x === (portal.x / 20) && this.headPosition.y === (portal.y / 20))
+               {
+                 //portal.reset();
+                 this.headPosition.x = portal.sisterX / 20;
+                 this.headPosition.y = portal.sisterY / 20;
+                 Phaser.Actions.ShiftPosition(this.body.getChildren(), portal.sisterX / 20, portal.sisterY / 20, 1, this.tail);
+                 return true;
+               }
+               return false;
              }
-
-
          });
 
          var Pill = new Phaser.Class({
@@ -175,6 +188,7 @@
 
              this.setPosition(x * 20, y * 20);
            }
+
          });
 
          var Portal = new Phaser.Class({
@@ -189,14 +203,31 @@
              this.setTexture("portal")
              this.setPosition(x * 20, y * 20)
              this.setOrigin(0)
-
+             this.sisterX = 0;
+             this.sisterY = 0;
              scene.children.add(this)
-           }
+           },
+
+           link: function(portal)
+           {
+             this.sisterX = portal.x;
+             this.sisterY = portal.y;
+           },
+
+           reset: function(){
+             var x = Phaser.Math.Between(0, 39);
+             var y = Phaser.Math.Between(0, 29);
+
+             this.setPosition(x * 20, y * 20);
+           },
          })
 
          snake = new Snake(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
          pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
-         portal = new Portal(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
+         portal = new Portal(this, 10, 15);
+         portal2 = new Portal(this,30, 15);
+         portal.link(portal2);
+         portal2.link(portal);
          cursors = this.input.keyboard.createCursorKeys();
 
      }
@@ -225,14 +256,20 @@
              snake.faceDown();
          }
 
-         if(snake.update(time)){
+         if(snake.update(time))
+         {
            snake.collideWithFood(pill);
+           if(!snake.collideWithPortal(portal))
+           {
+             snake.collideWithPortal(portal2)
+           }
          }
 
-         if(cursors.space.isDown){
+         if(cursors.space.isDown)
+         {
            this.input.keyboard.resetKeys()
            snake.grow();
-         }
+       }
      }
     </script>
 </body>
