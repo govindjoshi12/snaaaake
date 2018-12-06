@@ -5,39 +5,37 @@
 </head>
 <body>
     <script>
-      var config = {
-          type: Phaser.WEBGL,
-          width: 800,
-          height: 630,
-          scene: {
-              preload: preload,
-              create: create,
-              update: update
-          }
-      };
-      var game = new Phaser.Game(config);
+var MainGame = new Phaser.Class({
+      Extends: Phaser.Scene,
 
-      var grid;
-      var snake;
-      var pellet;
-      var portal;
-      var portal2;
-      var cursors;
-      var scoreText;
+      initialize:
 
-      var UP = 0;
-      var DOWN = 1;
-      var LEFT = 2;
-      var RIGHT = 3;
+      function MainGame()
+      {
+        Phaser.Scene.call(this, {key: 'MainGame'});
+      },
 
-      function preload()
+      grid: null,
+      snake: null,
+      pellet: null,
+      portal: null,
+      portal2: null,
+      cursors: null,
+      scoreText: null,
+
+      UP : 0,
+      DOWN : 1,
+      LEFT : 2,
+      RIGHT : 3,
+
+      preload: function()
       {
         this.load.image('snake', 'assets/snake.png')
         this.load.image('pill', 'assets/pill.png')
         this.load.image('portal', 'assets/portal.png')
-      }
+      },
 
-      function create()
+      create: function()
       {
         grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
         grid.setOrigin(0);
@@ -59,8 +57,6 @@
                  this.head.setOrigin(0);
 
                  this.alive = true;
-
-
 
                  this.speed = 100;
 
@@ -85,33 +81,33 @@
 
              faceLeft: function ()
              {
-                 if (this.direction === UP || this.direction === DOWN || this.direction === null)
+                 if (this.direction === 0 || this.direction === 1 || this.direction === null)
                  {
-                     this.heading = LEFT;
+                     this.heading = 2;
                  }
              },
 
              faceRight: function ()
              {
-                 if (this.direction === UP || this.direction === DOWN || this.direction === null)
+                 if (this.direction === 0 || this.direction === 1 || this.direction === null)
                  {
-                     this.heading = RIGHT;
+                     this.heading = 3;
                  }
              },
 
             faceUp: function ()
              {
-                 if (this.direction === LEFT || this.direction === RIGHT || this.direction === null)
+                 if (this.direction === 2 || this.direction === 3 || this.direction === null)
                  {
-                     this.heading = UP;
+                     this.heading = 0;
                  }
              },
 
              faceDown: function ()
              {
-                 if (this.direction === LEFT || this.direction === RIGHT || this.direction === null)
+                 if (this.direction === 2 || this.direction === 3 || this.direction === null)
                  {
-                     this.heading = DOWN;
+                     this.heading = 1;
                  }
              },
 
@@ -119,19 +115,19 @@
              {
                switch (this.heading)
               {
-                    case LEFT:
+                    case 2:
                         this.headPosition.x = this.headPosition.x - 1
                         break;
 
-                    case RIGHT:
+                    case 3:
                         this.headPosition.x = this.headPosition.x + 1
                         break;
 
-                    case UP:
+                    case 0:
                         this.headPosition.y = this.headPosition.y - 1
                         break;
 
-                    case DOWN:
+                    case 1:
                         this.headPosition.y = this.headPosition.y + 1
                         break;
               }
@@ -243,9 +239,9 @@
          cursors = this.input.keyboard.createCursorKeys();
          toDisplay = "Score: " + snake.score
          scoreText = this.add.text(16, 600, toDisplay, { fontSize: '32px'})
-     }
+     },
 
-     function update (time, delta)
+     update : function(time, delta)
      {
          if (!snake.alive)
          {
@@ -284,6 +280,16 @@
            snake.grow();
        }
      }
+   })
+
+     var config = {
+         type: Phaser.WEBGL,
+         width: 800,
+         height: 630,
+         scene: [MainGame]
+     };
+
+     var game = new Phaser.Game(config);
     </script>
 </body>
 </html>
