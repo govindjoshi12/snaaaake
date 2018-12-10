@@ -25,6 +25,7 @@
       portal2: null,
       cursors: null,
       scoreText: null,
+      walls: null,
 
       UP: 0,
       DOWN: 1,
@@ -150,6 +151,17 @@
               return true;
             }
             return false;
+          },
+
+          collideWithWalls: function(walls)
+          {
+            walls.forEach(function(item){
+              if(this.headPosition.x === (item.x / 20) || this.headPosition.y === (item.y / 20))
+                  return true;
+                  console.log("hello")
+            }, this)
+            return false;
+            console.log('bye')
           }
         });
 
@@ -216,7 +228,6 @@
 
             function Wall(scene, x, y) {
               Phaser.GameObjects.Image.call(this, scene)
-
               this.setTexture("wall")
               this.setPosition(x * 20, y * 20)
               this.setOrigin(0)
@@ -233,21 +244,26 @@
         portal.link(portal2);
         portal2.link(portal);
 
-        for(var i = 0; i < 39; i++)
+        walls = this.add.group();
+        for(var i = 0; i < 40; i++)
         {
-          var wall = new Wall(this, i, 0);
+          var wall = new Wall(this, i, 0)
+          walls.add(wall);
         }
-        for(var i = 0; i < 39; i++)
+        for(var i = 0; i < 40; i++)
         {
-          var wall = new Wall(this, i, 29);
+            var wall = new Wall(this, i, 29)
+            walls.add(wall);
         }
         for(var i = 0; i < 29; i++)
         {
-          var wall = new Wall(this, 0, i);
+            var wall = new Wall(this, 0, i)
+            walls.add(wall);
         }
         for(var i = 0; i < 30; i++)
         {
-          var wall = new Wall(this, 39, i);
+            var wall = new Wall(this, 39, i)
+            walls.add(wall);
         }
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -277,6 +293,8 @@
           if (!snake.collideWithPortal(portal)) {
             snake.collideWithPortal(portal2)
           }
+          if(snake.collideWithWalls(walls))
+              this.scene.start('GameOver');
         }
 
         if (cursors.space.isDown) {
