@@ -26,6 +26,7 @@
       cursors: null,
       scoreText: null,
 
+
       UP: 0,
       DOWN: 1,
       LEFT: 2,
@@ -146,7 +147,6 @@
               //portal.reset();
               this.headPosition.x = portal.sisterX / 20;
               this.headPosition.y = portal.sisterY / 20;
-              Phaser.Actions.ShiftPosition(this.body.getChildren(), portal.sisterX / 20, portal.sisterY / 20, 1, this.tail);
               return true;
             }
             return false;
