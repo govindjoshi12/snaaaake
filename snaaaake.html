@@ -35,6 +35,7 @@
         this.load.image('snake', 'assets/snake.png')
         this.load.image('pill', 'assets/pill.png')
         this.load.image('portal', 'assets/portal.png')
+        this.load.image('wall', 'assets/wall.png')
       },
 
       create: function() {
@@ -146,7 +147,6 @@
               //portal.reset();
               this.headPosition.x = portal.sisterX / 20;
               this.headPosition.y = portal.sisterY / 20;
-              Phaser.Actions.ShiftPosition(this.body.getChildren(), portal.sisterX / 20, portal.sisterY / 20, 1, this.tail);
               return true;
             }
             return false;
@@ -207,7 +207,22 @@
 
             this.setPosition(x * 20, y * 20);
           },
-        })
+        });
+
+        var Wall = new Phaser.Class({
+          Extends: Phaser.GameObjects.Image,
+
+          initialize:
+
+            function Wall(scene, x, y) {
+              Phaser.GameObjects.Image.call(this, scene)
+
+              this.setTexture("wall")
+              this.setPosition(x * 20, y * 20)
+              this.setOrigin(0)
+              scene.children.add(this)
+            }
+        });
 
 
 
@@ -217,6 +232,24 @@
         portal2 = new Portal(this, 30, 15);
         portal.link(portal2);
         portal2.link(portal);
+
+        for(var i = 0; i < 39; i++)
+        {
+          var wall = new Wall(this, i, 0);
+        }
+        for(var i = 0; i < 39; i++)
+        {
+          var wall = new Wall(this, i, 29);
+        }
+        for(var i = 0; i < 29; i++)
+        {
+          var wall = new Wall(this, 0, i);
+        }
+        for(var i = 0; i < 30; i++)
+        {
+          var wall = new Wall(this, 39, i);
+        }
+
         cursors = this.input.keyboard.createCursorKeys();
         toDisplay = "Score: " + snake.score
         scoreText = this.add.text(16, 600, toDisplay, {
