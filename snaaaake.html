@@ -300,7 +300,7 @@
         if (cursors.space.isDown) {
           //this.input.keyboard.resetKeys()
           //snake.grow();
-          this.scene.start('GameOver', snake.score);
+          this.scene.start('GameOver', {text: snake.score});
         }
       }
     })
@@ -309,17 +309,15 @@
       Extends: Phaser.Scene,
 
       initialize:
-      function GameOver(score)
+      function GameOver()
       {
           Phaser.Scene.call(this, {key: 'GameOver'});
-          this.scoreText = score;
       },
 
-
-      create: function()
+      create: function(data)
       {
         gameOver = this.add.text(100 , 250, "YOU DIED", {fontSize: '128px', color: '#f00'})
-        score = this.add.text(100, 350, this.score, {fontSize:'64px'});
+        score = this.add.text(100, 400, "Your score was:" + data.text, {fontSize:'64px'});
       }
     })
 
