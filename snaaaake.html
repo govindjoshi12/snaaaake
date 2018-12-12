@@ -59,8 +59,7 @@
 
               this.alive = true;
 
-              this.speed = 100;
-
+              this.speed = 90;
 
               this.moveTime = 0;
 
@@ -139,7 +138,8 @@
             if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
               pill.consume();
               this.grow()
-
+              if(speed != 40)
+                speed--;
             }
           },
 
@@ -153,15 +153,13 @@
             return false;
           },
 
-          collideWithWalls: function(walls)
+          collide: function(item)
           {
-            walls.forEach(function(item){
-              if(this.headPosition.x === (item.x / 20) || this.headPosition.y === (item.y / 20))
+                if(this.headPosition.x === (item.x / 20) && this.headPosition.y === (item.y / 20))
                   return true;
-                  console.log("hello")
-            }, this)
-            return false;
-            console.log('bye')
+                else {
+                    return false;
+                }
           }
         });
 
@@ -184,8 +182,8 @@
             },
 
           consume: function() {
-            var x = Phaser.Math.Between(0, 39);
-            var y = Phaser.Math.Between(0, 29);
+            var x = Phaser.Math.Between(1, 38);
+            var y = Phaser.Math.Between(1, 28);
 
             this.setPosition(x * 20, y * 20);
           }
@@ -237,8 +235,8 @@
 
 
 
-        snake = new Snake(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
-        pill = new Pill(this, Math.floor(Math.random() * 40), Math.floor(Math.random() * 30));
+        snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         portal = new Portal(this, 10, 15);
         portal2 = new Portal(this, 30, 15);
         portal.link(portal2);
@@ -293,14 +291,17 @@
           if (!snake.collideWithPortal(portal)) {
             snake.collideWithPortal(portal2)
           }
-          if(snake.collideWithWalls(walls))
-              this.scene.start('GameOver');
-        }
-
-        if (cursors.space.isDown) {
-          //this.input.keyboard.resetKeys()
-          //snake.grow();
-          this.scene.start('GameOver', {text: snake.score});
+        Phaser.Actions.Call(walls.getChildren(), function(item) {
+          if(snake.collide(item))
+            this.scene.start('GameOver', {text: snake.score});
+        }, this);
+        Phaser.Actions.Call(snake.body.getChildren(), function(item) {
+            if(!(snake.head === item))
+            {
+              if(snake.collide(item))
+                this.scene.start('GameOver', {text: snake.score});
+            }
+          }, this);
         }
       }
     })
