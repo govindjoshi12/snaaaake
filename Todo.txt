@@ -10,12 +10,12 @@
   1.5 When the snake head hits a collectible, the snake grows by 1, the collectible is removed,
   and a new collectible is randomly placed on the screen in an open spot 🚧 Todo: ensure open spot
   1.6 Maps can have "portals"
-    1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ❌
-    1.6.2 When the game starts, two matching portals will be randomly placed ❌
+    1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ✔️
+    1.6.2 When the game starts, two matching portals will be randomly placed ✔️
 
 2 End Game ❌
-  2.1 The game ends when the snake head hits a wall ❌
-  2.2 The game ends when the snake head hits another snake piece ❌
+  2.1 The game ends when the snake head hits a wall ✔️
+  2.2 The game ends when the snake head hits another snake piece ✔️
   2.3 When the game ends, the game over screen shows your score ✔️
     2.3.1 Score is calculated based on the number of Snake Pieces ✔️
   2.4 When game ends, the game over screen shows the top 10 scores ❌

@@ -44,7 +44,6 @@
         grid.setOrigin(0);
         this.add.rectangle(0, 0, 800, 600)
 
-
         var Snake = new Phaser.Class({
           initialize:
 
@@ -128,7 +127,6 @@
 
           grow: function() {
             var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
-            this.score += 1
             newPart.setOrigin(0);
             scoreText.setText('Score: ' + snake.score)
           },
@@ -137,7 +135,9 @@
           collideWithFood: function(pill) {
             if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
               pill.consume();
-              this.grow()
+              this.grow();
+
+              this.score += 1
               if(speed != 40)
                 speed--;
             }
@@ -322,12 +322,36 @@
       }
     })
 
+    var TitleScreen = new Phaser.Class({
+      Extends: Phaser.Scene,
+
+      initialize:
+      function TitleScreen()
+      {
+          Phaser.Scene.call(this, {key: 'TitleScreen'});
+      },
+
+      cursors: null,
+
+      create: function(data)
+      {
+        gameOver = this.add.text(200, 200, "SNAKE", {fontSize: '128px', color: '#f00'})
+        score = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        cursors = this.input.keyboard.createCursorKeys();
+      },
+
+      update: function()
+      {
+        if(cursors.space.isDown)
+          this.scene.start('MainGame');
+      }
+    })
 
     var config = {
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [MainGame, GameOver]
+      scene: [TitleScreen, MainGame, GameOver]
     };
 
     var game = new Phaser.Game(config);
