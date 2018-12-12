@@ -317,8 +317,16 @@
 
       create: function(data)
       {
+        this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         gameOver = this.add.text(100 , 250, "YOU DIED", {fontSize: '128px', color: '#f00'})
         score = this.add.text(100, 400, "Your score was:" + data.text, {fontSize:'64px'});
+        reset = this.add.text(43, 500, "Press R to Retry. Press Esc to Return to Menu", {fontSize:'26px'})
+      },
+
+      update: function(time, delta){
+        if(this.key.isDown){
+          this.scene.start('MainGame');
+        }
       }
     })
 
