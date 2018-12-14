@@ -12,9 +12,10 @@
 
       initialize:
 
-        function MainGame() {
+        function MainGame(data) {
           Phaser.Scene.call(this, {
-            key: 'MainGame'
+            key: 'MainGame',
+            theme: data.target
           });
         },
 
@@ -33,10 +34,10 @@
       RIGHT: 3,
 
       preload: function() {
-        this.load.image('snake', 'assets/snake.png')
-        this.load.image('pill', 'assets/pill.png')
-        this.load.image('portal', 'assets/portal.png')
-        this.load.image('wall', 'assets/wall.png')
+        this.load.image('snake', 'assets/' + theme + 'snake.png')
+        this.load.image('pill', 'assets/' + theme + 'pill.png')
+        this.load.image('portal', 'assets/' + theme + 'portal.png')
+        this.load.image('wall', 'assets/' + theme + 'wall.png')
       },
 
       create: function() {
@@ -128,9 +129,6 @@
           grow: function() {
             var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
             newPart.setOrigin(0);
-            this.score += 1
-            if(this.speed != 60)
-              this.speed--;
             scoreText.setText('Score: ' + snake.score)
           },
 
@@ -140,6 +138,9 @@
               pill.consume();
               this.grow();
 
+              this.score += 1
+              if(speed != 40)
+                speed--;
             }
           },
 
@@ -237,8 +238,8 @@
 
         snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
-        portal = new Portal(this, 10, 15);
-        portal2 = new Portal(this, 30, 15);
+        portal = new Portal(this,  Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        portal2 = new Portal(this,  Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         portal.link(portal2);
         portal2.link(portal);
 
@@ -286,11 +287,6 @@
           snake.faceDown();
         }
 
-        if(cursors.space.isDown){
-          cursors.space.reset();
-          snake.grow();
-        }
-
         if (snake.update(time)) {
           snake.collideWithFood(pill);
           if (!snake.collideWithPortal(portal)) {
@@ -322,15 +318,6 @@
 
       create: function(data)
       {
-        localStorage.clear();
-        if(localStorage.getItem("scoreboard") != null)
-        {
-          var highscore = JSON.parse(localStorage.getItem("scoreboard"))
-          console.log(highscore)
-        }
-        else{
-          console.log("it's gone")
-        }
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         gameOver = this.add.text(100 , 250, "YOU DIED", {fontSize: '128px', color: '#f00'})
         score = this.add.text(100, 400, "Your score was:" + data.text, {fontSize:'64px'});
@@ -353,19 +340,55 @@
           Phaser.Scene.call(this, {key: 'TitleScreen'});
       },
 
+      key1: null,
       cursors: null,
 
-      create: function(data)
+      create: function()
       {
         gameOver = this.add.text(200, 200, "SNAKE", {fontSize: '128px', color: '#f00'})
-        score = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        score = this.add.text(190, 320, "SPACE to start!", {fontSize:'48px'});
+        score = this.add.text(230, 370, "S - Settings", {fontSize:'48px'});
         cursors = this.input.keyboard.createCursorKeys();
+
+        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       },
 
       update: function()
       {
         if(cursors.space.isDown)
-          this.scene.start('MainGame');
+          this.scene.start('MainGame', {target: 'theme1'});
+        if(key1.isDown)
+        {
+          this.scene.start('Settings')
+        }
+      }
+    })
+
+    var Settings = new Phaser.Class({
+      Extends: Phaser.Scene,
+
+      initialize:
+      function Settings()
+      {
+          Phaser.Scene.call(this, {key: 'Settings'});
+      },
+
+      key1: null,
+      cursors: null,
+
+      create: function()
+      {
+        gameOver = this.add.text(250, 200, "Settings", {fontSize: '64px', color: '#f00'})
+        score = this.add.text(170, 260, "S - Return to Main", {fontSize:'48px'});
+        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      },
+
+      update: function()
+      {
+        if(key1.isDown)
+        {
+          this.scene.start('TitleScreen')
+        }
       }
     })
 
@@ -373,7 +396,7 @@
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [TitleScreen, MainGame, GameOver]
+      scene: [TitleScreen, Settings, MainGame, GameOver]
     };
 
     var game = new Phaser.Game(config);
