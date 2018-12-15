@@ -10,7 +10,7 @@
     //set textures for each object from 1 - 4,
     //texture files are temporary for testing
     //purposes.
-    var snakeTexture = 1;
+    var snakeTexture = 4;
     var pillTexture = 4;
     var portalTexture = 3;
     var wallTexture = 2;
@@ -65,17 +65,17 @@
         this.load.image('wall4', 'assets/theme4/wall.png')
         this.load.image('background4', 'assets/theme4/background.png')
 
-        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
       },
 
       create: function() {
-        sound = this.sound.add('rake_the_hornpipe', { loop: true });
+        sound = this.sound.add('police_car', { loop: true });
         sound.volume = 5
         sound.play();
 
-        grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
-        grid.setOrigin(0);
-        this.add.rectangle(0, 0, 800, 600)
+        //grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
+        //grid.setOrigin(0);
+        //this.add.rectangle(0, 0, 800, 600)
 
         var Snake = new Phaser.Class({
           initialize:
@@ -91,7 +91,7 @@
 
               this.alive = true;
 
-              this.speed = 90;
+              this.speed = 100;
 
               this.moveTime = 0;
 
@@ -161,7 +161,7 @@
           grow: function() {
             var newPart = this.body.create(this.tail.x, this.tail.y, 'snake' + snakeTexture);
             newPart.setOrigin(0);
-            if(this.speed != 60)
+            if(this.speed != 40)
               this.speed--;
             scoreText.setText('Score: ' + snake.score)
           },
@@ -170,12 +170,15 @@
           collideWithFood: function(pill) {
             if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
               pill.consume();
-              for(var i = 0; i < 3; i++)
+              for(var i = 0; i < 4; i++)
               {
                 this.grow();
               }
-              this.score += 1
-              sound.rate += 0.05;
+              this.score += 2
+
+              if(!(sound.rate >= 1.5))
+                sound.rate += 0.03;
+              console.log(sound.rate)
             }
           },
 
