@@ -7,6 +7,14 @@
 
 <body>
   <script>
+    //set textures for each object from 1 - 4,
+    //texture files are temporary for testing
+    //purposes.
+    var snakeTexture = 1;
+    var pillTexture = 4;
+    var portalTexture = 3;
+    var wallTexture = 2;
+
     var MainGame = new Phaser.Class({
       Extends: Phaser.Scene,
 
@@ -33,13 +41,38 @@
       RIGHT: 3,
 
       preload: function() {
-        this.load.image('snake', 'assets/snake.png')
-        this.load.image('pill', 'assets/pill.png')
-        this.load.image('portal', 'assets/portal.png')
-        this.load.image('wall', 'assets/wall.png')
+        this.load.image('snake1', 'assets/theme1/snake.png')
+        this.load.image('pill1', 'assets/theme1/pill.png')
+        this.load.image('portal1', 'assets/theme1/portal.png')
+        this.load.image('wall1', 'assets/theme1/wall.png')
+        this.load.image('background1', 'assets/theme1/background.png')
+
+        this.load.image('snake2', 'assets/theme2/snake.png')
+        this.load.image('pill2', 'assets/theme2/pill.png')
+        this.load.image('portal2', 'assets/theme2/portal.png')
+        this.load.image('wall2', 'assets/theme2/wall.png')
+        this.load.image('background2', 'assets/theme2/background.png')
+
+        this.load.image('snake3', 'assets/theme3/snake.png')
+        this.load.image('pill3', 'assets/theme3/pill.png')
+        this.load.image('portal3', 'assets/theme3/portal.png')
+        this.load.image('wall3', 'assets/theme3/wall.png')
+        this.load.image('background3', 'assets/theme3/background.png')
+
+        this.load.image('snake4', 'assets/theme4/snake.png')
+        this.load.image('pill4', 'assets/theme4/pill.png')
+        this.load.image('portal4', 'assets/theme4/portal.png')
+        this.load.image('wall4', 'assets/theme4/wall.png')
+        this.load.image('background4', 'assets/theme4/background.png')
+
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
       },
 
       create: function() {
+        sound = this.sound.add('rake_the_hornpipe', { loop: true });
+        sound.volume = 5
+        sound.play();
+
         grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
         grid.setOrigin(0);
         this.add.rectangle(0, 0, 800, 600)
@@ -52,7 +85,7 @@
 
               this.body = scene.add.group();
 
-              this.head = this.body.create(x * 20, y * 20, 'snake');
+              this.head = this.body.create(x * 20, y * 20, 'snake' + snakeTexture);
 
               this.head.setOrigin(0);
 
@@ -126,9 +159,8 @@
           },
 
           grow: function() {
-            var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
+            var newPart = this.body.create(this.tail.x, this.tail.y, 'snake' + snakeTexture);
             newPart.setOrigin(0);
-            this.score += 1
             if(this.speed != 60)
               this.speed--;
             scoreText.setText('Score: ' + snake.score)
@@ -138,8 +170,12 @@
           collideWithFood: function(pill) {
             if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
               pill.consume();
-              this.grow();
-
+              for(var i = 0; i < 3; i++)
+              {
+                this.grow();
+              }
+              this.score += 1
+              sound.rate += 0.05;
             }
           },
 
@@ -172,7 +208,7 @@
             function Pill(scene, x, y) {
               Phaser.GameObjects.Image.call(this, scene)
 
-              this.setTexture('pill');
+              this.setTexture('pill' + pillTexture);
               this.setPosition(x * 20, y * 20);
               this.setOrigin(0);
 
@@ -198,7 +234,7 @@
             function Portal(scene, x, y) {
               Phaser.GameObjects.Image.call(this, scene)
 
-              this.setTexture("portal")
+              this.setTexture("portal" + portalTexture)
               this.setPosition(x * 20, y * 20)
               this.setOrigin(0)
               this.sisterX = 0;
@@ -226,19 +262,17 @@
 
             function Wall(scene, x, y) {
               Phaser.GameObjects.Image.call(this, scene)
-              this.setTexture("wall")
+              this.setTexture("wall" + wallTexture)
               this.setPosition(x * 20, y * 20)
               this.setOrigin(0)
               scene.children.add(this)
             }
         });
 
-
-
         snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
-        portal = new Portal(this, 10, 15);
-        portal2 = new Portal(this, 30, 15);
+        portal = new Portal(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        portal2 = new Portal(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         portal.link(portal2);
         portal2.link(portal);
 
@@ -298,13 +332,19 @@
           }
         Phaser.Actions.Call(walls.getChildren(), function(item) {
           if(snake.collide(item))
+          {
+            sound.stop();
             this.scene.start('GameOver', {text: snake.score});
+          }
         }, this);
         Phaser.Actions.Call(snake.body.getChildren(), function(item) {
             if(!(snake.head === item))
             {
               if(snake.collide(item))
-                this.scene.start('GameOver', {text: snake.score});
+              {
+                  sound.stop();
+                  this.scene.start('GameOver', {text: snake.score});
+              }
             }
           }, this);
         }
@@ -320,8 +360,17 @@
           Phaser.Scene.call(this, {key: 'GameOver'});
       },
 
+      preload: function()
+      {
+        this.load.audio('gnomed', 'assets/audio/gnomed.mp3');
+        this.load.image('dacoop', 'assets/dacoop.png')
+      },
+
       create: function(data)
       {
+        sound1 = this.sound.add('gnomed');
+        sound1.play();
+
         localStorage.clear();
         if(localStorage.getItem("scoreboard") != null)
         {
@@ -331,15 +380,21 @@
         else{
           console.log("it's gone")
         }
+
+        var coop = this.add.image(400, 150, 'dacoop');
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         gameOver = this.add.text(100 , 250, "YOU DIED", {fontSize: '128px', color: '#f00'})
         score = this.add.text(100, 400, "Your score was:" + data.text, {fontSize:'64px'});
-        reset = this.add.text(43, 500, "Press R to Retry. Press Esc to Return to Menu", {fontSize:'26px'})
+        reset = this.add.text(75, 500, "Press R to Retry. Press E to Return to Menu", {fontSize:'26px'})
       },
 
       update: function(time, delta){
         if(this.key.isDown){
           this.scene.start('MainGame');
+        }
+        if(this.key1.isDown){
+          this.scene.start('TitleScreen');
         }
       }
     })
@@ -355,17 +410,72 @@
 
       cursors: null,
 
-      create: function(data)
+      preload: function()
       {
-        gameOver = this.add.text(200, 200, "SNAKE", {fontSize: '128px', color: '#f00'})
-        score = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        //this.load.image('logo', 'assets/logo.png');
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3');
+      },
+
+      create: function()
+      {
+        //this.add.image('logo', 100, 300);
+        logo = this.add.text(200, 200, "SNAKE", {fontSize:'128px', color:'red'});
+        start = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        settings = this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
         cursors = this.input.keyboard.createCursorKeys();
+        keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        sound = this.sound.add('drunken_sailor', { loop: true });
+        sound.play();
       },
 
       update: function()
       {
         if(cursors.space.isDown)
+        {
+          sound.stop();
           this.scene.start('MainGame');
+        }
+        if(keyControl.isDown)
+        {
+          sound.stop();
+          this.scene.start('Settings');
+        }
+      }
+    })
+
+    var Settings = new Phaser.Class({
+      Extends: Phaser.Scene,
+
+      initialize:
+      function Settings()
+      {
+          Phaser.Scene.call(this, {key: 'Settings'});
+      },
+
+      preload: function()
+      {
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3');
+      },
+
+      create: function()
+      {
+        gameOver = this.add.text(200, 200, "Settings", {fontSize: '80px', color: '#f00'})
+        score = this.add.text(220, 270, "Select a theme", {fontSize:'40px'});
+        score = this.add.text(125, 575, "S - Return to Main Menu", {fontSize:'40px'});
+        keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        sound = this.sound.add('wooden_bear', { loop: true });
+        sound.play();
+      },
+
+      update: function()
+      {
+        if(keyControl.isDown)
+        {
+          sound.stop();
+          this.scene.start('TitleScreen');
+        }
       }
     })
 
@@ -373,7 +483,7 @@
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [TitleScreen, MainGame, GameOver]
+      scene: [TitleScreen, Settings, MainGame, GameOver]
     };
 
     var game = new Phaser.Game(config);
