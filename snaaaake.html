@@ -371,8 +371,6 @@
       {
         this.load.audio('gnomed', 'assets/audio/gnomed.mp3');
         this.load.image('coop', 'assets/dacoop.png')
-        this.highScoreInput = this.add.text(100, 200, "Enter a name: ", {fontSize: '24px'})
-        this.highScoreInput.setVisible(false)
       },
 
       create: function(data)
@@ -477,12 +475,13 @@
       create: function()
       {
         //this.add.image('logo', 100, 300);
-        logo = this.add.text(200, 200, "SNAKE", {fontSize:'128px', color:'red'});
-        start = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
-        settings = this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
+        this.add.text(200, 200, "SNAKE", {fontSize:'128px', color:'red'});
+        this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
+        this.add.text(90, 400, "Press H to access highscores", {fontSize:'40px'});
         cursors = this.input.keyboard.createCursorKeys();
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-
+        keyControl2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
         sound = this.sound.add('drunken_sailor', { loop: true });
         sound.play();
       },
@@ -498,6 +497,11 @@
         {
           sound.stop();
           this.scene.start('Settings');
+        }
+        if(keyControl2.isDown)
+        {
+          sound.stop();
+          this.scene.start('HighScore')
         }
       }
     })
@@ -538,12 +542,68 @@
       }
     })
 
+    var HighScore = new Phaser.Class({
+      Extends: Phaser.Scene,
+
+      initialize:
+      function HighScore()
+      {
+        Phaser.Scene.call(this, {key: 'HighScore'})
+      },
+
+      create: function()
+      {
+        if(JSON.parse(localStorage.getItem("scoreboard")) != null)
+        {
+          this.displayHighscore(JSON.parse(localStorage.getItem("scoreboard")))
+        }
+        else {
+          this.add.text(400, 300, "There are no scores currently set.", {fontSize: '150px'})
+        }
+        score = this.add.text(125, 575, "S - Return to Main Menu", {fontSize:'40px'});
+        keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.add.text(170, 50, "Highscores", {fontSize: '75px', color: '#B753FF'})
+
+      },
+
+      update: function()
+      {
+        if(keyControl.isDown)
+        {
+          this.scene.start('TitleScreen');
+        }
+      },
+
+      displayHighscore: function(scoreboard){
+        for(i = 0; i < scoreboard.length; i++)
+        {
+          if(i === 0)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#D4AF37'})
+          }
+          else if(i === 1)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#C0C0C0'})
+          }
+          else if(i === 2)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#CD7F32'})
+          }
+          else {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px'})
+          }
+        }
+      }
+    })
+
     var config = {
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [TitleScreen, Settings, MainGame, GameOver]
+      scene: [TitleScreen, Settings, MainGame, GameOver, HighScore]
     };
+
+
 
     var game = new Phaser.Game(config);
   </script>
