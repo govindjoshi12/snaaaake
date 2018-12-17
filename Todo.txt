@@ -1,4 +1,4 @@
-1 Game Play ❌
+1 Game Play ✔️
   1.1 I can move a "snake piece" around the screen ✔️
     1.1.1 Snake Piece starts not-moving  ✔️
     1.1.2 Once a direction is pressed, snake always moves ✔️
@@ -6,9 +6,9 @@
   1.2 I cannot move a Snake "backwards" ✔️
     1.2.1 If snake is moving "north", then pressing "down" doesn't do anything ✔️
   1.3 I can make the Snake Grow by 1 Snake Piece when I press SPACE key (for testing purposes) ✔️
-  1.4 When the game starts, a "collectible" randomly appears on the screen in an "open spot" 🚧 Todo: ensure open spot
+  1.4 When the game starts, a "collectible" randomly appears on the screen in an "open spot" ✔️
   1.5 When the snake head hits a collectible, the snake grows by 1, the collectible is removed,
-  and a new collectible is randomly placed on the screen in an open spot 🚧 Todo: ensure open spot
+  and a new collectible is randomly placed on the screen in an open spot ✔️
   1.6 Maps can have "portals"
     1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ✔️
     1.6.2 When the game starts, two matching portals will be randomly placed ✔️
@@ -24,13 +24,13 @@
   2.7 I can start a new game from the game over screen ❌
 
 3 Program Start ❌
-  3.1 When the program starts, the main menu is displayed ❌
-  3.2 I can choose to Play the game from the main menu ❌
-  3.3 I can choose to Quit the game from the main menu ❌
+  3.1 When the program starts, the main menu is displayed ✔️
+  3.2 I can choose to Play the game from the main menu ✔️
+  3.3 I can choose to Quit the game from the main menu ❌ ??? What would this even do?
   3.4 I can choose to see the high scores from the main menu ❌
     3.4.1 I can return to the main menu from the high scores screen ❌
-  3.5 I can choose to enter a settings screen from the main menu ❌
-    3.5.1 I can return to the Main Menu from the settings screen ❌
+  3.5 I can choose to enter a settings screen from the main menu ✔️
+    3.5.1 I can return to the Main Menu from the settings screen ✔️
 
 4 Maps ❌
   4.1 When I play a game, I can choose between several different map choices, or have the game pick a random map ❌
@@ -64,6 +64,6 @@
     7.1.5 The theme can change the sound effects of the game ❌
     7.1.6 The theme can change the music of the game ❌
 
-8 Sound ❌
-  8.1 There is appropriate background music in the game ❌
-  8.2 There are appropriate sound effects in the game ❌
+8 Sound ✔️
+  8.1 There is appropriate background music in the game ✔️
+  8.2 There are appropriate sound effects in the game ✔️
