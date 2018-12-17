@@ -13,15 +13,15 @@
     1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ✔️
     1.6.2 When the game starts, two matching portals will be randomly placed ✔️
 
-2 End Game ❌
+2 End Game ✔️
   2.1 The game ends when the snake head hits a wall ✔️
   2.2 The game ends when the snake head hits another snake piece ✔️
   2.3 When the game ends, the game over screen shows your score ✔️
     2.3.1 Score is calculated based on the number of Snake Pieces ✔️
-  2.4 When game ends, the game over screen shows the top 10 scores ❌
-  2.5 When game ends, if the current score is a top 10 score, a "new high score" message is prominently displayed ❌
-  2.6 When the game ends, I can enter a name to be saved with the top score ❌
-  2.7 I can start a new game from the game over screen ❌
+  2.4 When game ends, the game over screen shows the top 10 scores ✔️
+  2.5 When game ends, if the current score is a top 10 score, a "new high score" message is prominently displayed ✔️
+  2.6 When the game ends, I can enter a name to be saved with the top score ✔️
+  2.7 I can start a new game from the game over screen ✔️
 
 3 Program Start ❌
   3.1 When the program starts, the main menu is displayed ✔️
