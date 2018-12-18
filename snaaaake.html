@@ -17,6 +17,7 @@
     var gameMusic = 'police_car.mp3';
     var settingsMusic = 'wooden_bear.mp3'
     var highscoresMusic = 'secret_service.mp3'
+    var music;
 
     var Snake = new Phaser.Class({
       texture: null,
@@ -105,23 +106,29 @@
         return true;
       },
 
-      grow: function() {
+      grow: function(whichSnake) {
         var newPart = this.body.create(this.tail.x, this.tail.y, 'snake' + this.texture);
         newPart.setOrigin(0);
 
         if(this.speed != 40)
           this.speed--;
-        scoreText.setText('Score: ' + snake.score)
+
+        if(whichSnake === 1){
+          scoreText.setText('Player 1 Score: ' + snake.score)
+        }
+        else if(whichSnake === 2){
+          scoreText2.setText('Player 2 Score: ' + snake.score)
+        }
       },
 
 
-      collideWithFood: function(pill) {
+      collideWithFood: function(pill, whichSnake) {
         if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
           pill.consume();
           this.score += 1
           for(var i = 0; i < 4; i++)
           {
-            this.grow();
+            this.grow(whichSnake);
           }
 
 
@@ -313,8 +320,8 @@
         }
 
         cursors = this.input.keyboard.createCursorKeys();
-        toDisplay = "Score: " + snake.score
-        scoreText = this.add.text(16, 600, toDisplay, {
+        toDisplay = "Player 1 Score: " + snake.score
+        scoreText = this.add.text(10, 600, toDisplay, {
           fontSize: '32px'
         })
       },
@@ -337,11 +344,11 @@
         if(cursors.space.isDown){
           cursors.space.reset();
           snake.score += 1
-          scoreText.setText('Score: ' + snake.score)
+          scoreText.setText('Player 1 Score: ' + snake.score)
         }
 
         if (snake.update(time)) {
-          snake.collideWithFood(pill);
+          snake.collideWithFood(pill, 1);
           if (!snake.collideWithPortal(portal)) {
             snake.collideWithPortal(portal2)
           }
@@ -386,6 +393,7 @@
       cursors: null,
       wasd: null,
       scoreText: null,
+      scoreText2: null,
       walls: null,
 
       UP: 0,
@@ -465,9 +473,12 @@
         down:Phaser.Input.Keyboard.KeyCodes.S,
         left:Phaser.Input.Keyboard.KeyCodes.A,
         right:Phaser.Input.Keyboard.KeyCodes.D});
-        toDisplay = "Score: " + snake.score
+        toDisplay = "Player 1 Score: " + snake.score
+        toDisplay2 = "Player 2 Score: " + snake2.score
         scoreText = this.add.text(16, 600, toDisplay, {
           fontSize: '32px'
+        })
+        scoreText2 = this.add.text(400, 600, toDisplay2, {fontSize:'32px'
         })
       },
 
@@ -487,7 +498,7 @@
         }
 
         if (snake.update(time)) {
-          snake.collideWithFood(pill);
+          snake.collideWithFood(pill, 1);
           if (!snake.collideWithPortal(portal)) {
             snake.collideWithPortal(portal2)
           }
@@ -525,7 +536,7 @@
         }
 
         if (snake2.update(time)) {
-          snake2.collideWithFood(pill);
+          snake2.collideWithFood(pill, 2);
           if (!snake2.collideWithPortal(portal)) {
             snake2.collideWithPortal(portal2)
           }
@@ -612,17 +623,6 @@
         if(this.key1.isDown){
           sound1.stop();
           this.scene.start('TitleScreen');
-        if(!this.inHighscore)
-        {
-          if(this.key.isDown){
-            sound1.stop();
-            this.scene.start(this.gameMode);
-            }
-          if(this.key1.isDown){
-            sound1.stop();
-            this.scene.start('TitleScreen');
-            }
-          }
         }
       },
 
@@ -697,8 +697,9 @@
         cursors = this.input.keyboard.createCursorKeys();
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyControl2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
-        sound = this.sound.add('drunken_sailor', { loop: true });
-        sound.play();
+        music = this.sound.add('drunken_sailor', { loop: true });
+        console.log(music)
+        music.play();
       },
 
       update: function()
@@ -706,7 +707,7 @@
         var mode = document.getElementById('current_mode').value;
         if(cursors.space.isDown)
         {
-          sound.stop();
+          music.stop();
           document.getElementsByClassName('game_mode')[0].style.visibility = 'hidden';
           console.log(mode)
           if(mode === "single-player")
@@ -720,13 +721,13 @@
         }
         if(keyControl.isDown)
         {
-          sound.stop();
+          music.stop();
           document.getElementsByClassName('game_mode')[0].style.visibility = 'hidden';
           this.scene.start('Settings');
         }
         if(keyControl2.isDown)
         {
-          sound.stop();
+          music.stop();
           document.getElementsByClassName('game_mode')[0].style.visibility = 'hidden';
           if(mode === "single-player")
             this.scene.start('HighScore', {gameMode: "MainGame"})
