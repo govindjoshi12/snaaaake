@@ -180,11 +180,12 @@
           collideWithFood: function(pill) {
             if (this.headPosition.x === (pill.x / 20) && this.headPosition.y === (pill.y / 20)) {
               pill.consume();
+              this.score += 1
               for(var i = 0; i < 4; i++)
               {
                 this.grow();
               }
-              this.score += 2
+
 
               if(!(sound.rate >= 1.5))
                 sound.rate += 0.03;
@@ -335,7 +336,8 @@
 
         if(cursors.space.isDown){
           cursors.space.reset();
-          snake.grow();
+          snake.score += 1
+          scoreText.setText('Score: ' + snake.score)
         }
 
         if (snake.update(time)) {
@@ -373,10 +375,12 @@
           Phaser.Scene.call(this, {key: 'GameOver'});
       },
 
+      highscoreList: [],
+
       preload: function()
       {
         this.load.audio('gnomed', 'assets/audio/gnomed.mp3');
-        this.load.image('dacoop', 'assets/dacoop.png')
+        this.load.image('coop', 'assets/dacoop.png')
       },
 
       create: function(data)
@@ -384,22 +388,33 @@
         sound1 = this.sound.add('gnomed');
         sound1.play();
 
-        localStorage.clear();
         if(localStorage.getItem("scoreboard") != null)
         {
-          var highscore = JSON.parse(localStorage.getItem("scoreboard"))
-          console.log(highscore)
+          this.highscoreList = JSON.parse(localStorage.getItem("scoreboard"))
+          if(this.highscoreList.length < 10){
+            this.highscore(data.text, this.highscoreList)
+          }
+          else if(this.highscoreList[9].score < data.text){
+            this.highscore(data.text, this.highscoreList)
+          }
+          localStorage.setItem("scoreboard", JSON.stringify(this.highscoreList))
         }
         else{
-          console.log("it's gone")
+          this.highscore(data.text, this.highscoreList)
+          localStorage.setItem("scoreboard", JSON.stringify(this.highscoreList))
+          this.highscoreList = JSON.parse(localStorage.getItem("scoreboard"))
         }
 
-        var coop = this.add.image(400, 150, 'dacoop');
+        this.displayHighscore(this.highscoreList);
+
+        this.add.image(100, 75, 'coop');
+        this.add.image(750, 75, 'coop');
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-        gameOver = this.add.text(100 , 250, "YOU DIED", {fontSize: '128px', color: '#f00'})
-        score = this.add.text(100, 400, "Your score was:" + data.text, {fontSize:'64px'});
-        reset = this.add.text(75, 500, "Press R to Retry. Press E to Return to Menu", {fontSize:'26px'})
+        gameOver = this.add.text(175 , 10, "YOU DIED", {fontSize: '98px', color: '#ff0000'})
+        score = this.add.text(100, 500, "Your score was:" + data.text, {fontSize:'64px'});
+        reset = this.add.text(75, 575, "Press R to Retry. Press E to Return to Menu", {fontSize:'26px'})
+        this.add.text(135, 135, "Highscores for this level", {fontSize: '35px', color: '#B753FF'})
       },
 
       update: function(time, delta){
@@ -410,8 +425,51 @@
         if(this.key1.isDown){
           sound1.stop();
           this.scene.start('TitleScreen');
+        if(!this.inHighscore)
+        {
+          if(this.key.isDown){
+            this.scene.start('MainGame');
+          }
+          if(this.key1.isDown){
+            this.scene.start('TitleScreen');
+          }
+        }
+      },
+
+      highscore: function(data, scoreboard){
+        var winner = prompt("New Highscore! Enter a Name")
+        scoreboard.push({name: winner, score: data})
+        scoreboard.sort(function (a, b)
+        {
+          return b.score - a.score;
+        })
+        if(scoreboard.length > 10){
+          scoreboard.pop();
+        }
+      },
+
+      displayHighscore: function(scoreboard){
+        for(i = 0; i < scoreboard.length; i++)
+        {
+          if(i === 0)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#D4AF37'})
+          }
+          else if(i === 1)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#C0C0C0'})
+          }
+          else if(i === 2)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#CD7F32'})
+          }
+          else {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px'})
+          }
         }
       }
+
+
     })
 
     var TitleScreen = new Phaser.Class({
@@ -439,9 +497,13 @@
         border = this.add.image(400, 315, 'border');
         start = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
         settings = this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
+        this.add.text(200, 200, "SNAKE", {fontSize:'128px', color:'red'});
+        this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
+        this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
+        this.add.text(90, 400, "Press H to access highscores", {fontSize:'40px'});
         cursors = this.input.keyboard.createCursorKeys();
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-
+        keyControl2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
         sound = this.sound.add('drunken_sailor', { loop: true });
         sound.play();
       },
@@ -458,6 +520,11 @@
           sound.stop();
           this.scene.start('Settings');
         }
+        if(keyControl2.isDown)
+        {
+          sound.stop();
+          this.scene.start('HighScore')
+        }
       }
     })
 
@@ -469,6 +536,7 @@
       {
           Phaser.Scene.call(this, {key: 'Settings'});
       },
+
 
       preload: function()
       {
@@ -496,12 +564,68 @@
       }
     })
 
+    var HighScore = new Phaser.Class({
+      Extends: Phaser.Scene,
+
+      initialize:
+      function HighScore()
+      {
+        Phaser.Scene.call(this, {key: 'HighScore'})
+      },
+
+      create: function()
+      {
+        if(JSON.parse(localStorage.getItem("scoreboard")) != null)
+        {
+          this.displayHighscore(JSON.parse(localStorage.getItem("scoreboard")))
+        }
+        else {
+          this.add.text(400, 300, "There are no scores currently set.", {fontSize: '150px'})
+        }
+        score = this.add.text(125, 575, "S - Return to Main Menu", {fontSize:'40px'});
+        keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.add.text(170, 50, "Highscores", {fontSize: '75px', color: '#B753FF'})
+
+      },
+
+      update: function()
+      {
+        if(keyControl.isDown)
+        {
+          this.scene.start('TitleScreen');
+        }
+      },
+
+      displayHighscore: function(scoreboard){
+        for(i = 0; i < scoreboard.length; i++)
+        {
+          if(i === 0)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#D4AF37'})
+          }
+          else if(i === 1)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#C0C0C0'})
+          }
+          else if(i === 2)
+          {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px', color: '#CD7F32'})
+          }
+          else {
+            this.add.text(235, 180 + (i * 30), "#" + (i + 1) + " " +  scoreboard[i].name + ": " + scoreboard[i].score, {fontSize: '24px'})
+          }
+        }
+      }
+    })
+
     var config = {
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [TitleScreen, Settings, MainGame, GameOver]
+      scene: [TitleScreen, Settings, MainGame, GameOver, HighScore]
     };
+
+
 
     var game = new Phaser.Game(config);
   </script>
