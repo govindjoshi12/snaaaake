@@ -6,27 +6,27 @@
   1.2 I cannot move a Snake "backwards" ✔️
     1.2.1 If snake is moving "north", then pressing "down" doesn't do anything ✔️
   1.3 I can make the Snake Grow by 1 Snake Piece when I press SPACE key (for testing purposes) ✔️
-  1.4 When the game starts, a "collectible" randomly appears on the screen in an "open spot" ✔️
+  1.4 When the game starts, a "collectible" randomly appears on the screen in an "open spot" 🚧 Todo: ensure open spot
   1.5 When the snake head hits a collectible, the snake grows by 1, the collectible is removed,
-  and a new collectible is randomly placed on the screen in an open spot ✔️
+  and a new collectible is randomly placed on the screen in an open spot 🚧 Todo: ensure open spot
   1.6 Maps can have "portals"
     1.6.1 When a snake head touches a portal it's next move is on the other side of the "matching portal" ✔️
     1.6.2 When the game starts, two matching portals will be randomly placed ✔️
 
-2 End Game ✔️
+2 End Game ❌
   2.1 The game ends when the snake head hits a wall ✔️
   2.2 The game ends when the snake head hits another snake piece ✔️
   2.3 When the game ends, the game over screen shows your score ✔️
     2.3.1 Score is calculated based on the number of Snake Pieces ✔️
-  2.4 When game ends, the game over screen shows the top 10 scores ✔️
-  2.5 When game ends, if the current score is a top 10 score, a "new high score" message is prominently displayed ✔️
-  2.6 When the game ends, I can enter a name to be saved with the top score ✔️
+  2.4 When game ends, the game over screen shows the top 10 scores ❌
+  2.5 When game ends, if the current score is a top 10 score, a "new high score" message is prominently displayed ❌
+  2.6 When the game ends, I can enter a name to be saved with the top score ❌
   2.7 I can start a new game from the game over screen ✔️
 
 3 Program Start ❌
   3.1 When the program starts, the main menu is displayed ✔️
   3.2 I can choose to Play the game from the main menu ✔️
-  3.3 I can choose to Quit the game from the main menu ❌ ??? What would this even do?
+  3.3 I can choose to Quit the game from the main menu ❌
   3.4 I can choose to see the high scores from the main menu ❌
     3.4.1 I can return to the main menu from the high scores screen ❌
   3.5 I can choose to enter a settings screen from the main menu ✔️
@@ -57,13 +57,13 @@
 
 7 Themes ❌
   7.1 I can change the "theme" of my game from the Setting Screen ❌
-    7.1.1 The theme can change the sprite used for the snake ❌
+    7.1.1 The theme can change the sprite used for the snake ✔️
     7.1.2 The theme can change the background of the map ❌
-    7.1.3 The theme can change the sprite used for the walls ❌
-    7.1.4 The theme can change the sprite used for the collectibles ❌
+    7.1.3 The theme can change the sprite used for the walls ✔️
+    7.1.4 The theme can change the sprite used for the collectibles ✔️
     7.1.5 The theme can change the sound effects of the game ❌
     7.1.6 The theme can change the music of the game ❌
 
-8 Sound ✔️
+8 Sound ❌
   8.1 There is appropriate background music in the game ✔️
-  8.2 There are appropriate sound effects in the game ✔️
+  8.2 There are appropriate sound effects in the game ❌
