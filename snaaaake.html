@@ -14,9 +14,9 @@
     var portalTexture = 1;
     var wallTexture = 1;
     var backgroundTexture = 'space.jpg';
-    var gameMusic = 'police_car.mp3';
-    var settingsMusic = 'wooden_bear.mp3'
-    var highscoresMusic = 'secret_service.mp3'
+    var gameMusic = 'police_car';
+    var settingsMusic = 'wooden_bear'
+    var highscoresMusic = 'secret_service'
     var music;
 
     var Snake = new Phaser.Class({
@@ -132,8 +132,8 @@
           }
 
 
-          if(!(sound.rate >= 1.5))
-            sound.rate += 0.03;
+          if(!(sound.rate >= 7))
+            sound.rate += 0.1;
 
         }
       },
@@ -275,17 +275,28 @@
         this.load.image('portal4', 'assets/theme4/portal.png')
         this.load.image('wall4', 'assets/theme4/wall.png')
 
-        this.load.image('background', 'assets/backgrounds/' + backgroundTexture)
-        this.load.audio('gameMusic', 'assets/audio/' + gameMusic)
+        this.load.image('space.jpg', 'assets/backgrounds/space.jpg')
+        this.load.image('sky.jpg', 'assets/backgrounds/sky.jpg')
+        this.load.image('city_night.jpg', 'assets/backgrounds/city_night.jpg')
+        this.load.image('city_morning.jpg', 'assets/backgrounds/city_morning.jpg')
+
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
+        this.load.audio('maui_beach', 'assets/audio/maui_beach.mp3')
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('secret_service', 'assets/audio/secret_service.mp3')
+        this.load.audio('the_beach', 'assets/audio/the_beach.mp3')
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3')
+        this.load.audio('pressure_point', 'assets/audio/pressure_point.mp3')
       },
 
       create: function() {
-        sound = this.sound.add('gameMusic', { loop: true });
+        sound = this.sound.add(gameMusic, { loop: true });
         sound.volume = 5
-        sound.rate = 0.95
+        sound.rate = 0.85
         sound.play();
 
-        var back = this.add.image(0, 0, 'background')
+        var back = this.add.image(0, 0, backgroundTexture)
         back.setOrigin(0,0)
         back.displayWidth = 800
         back.displayHeight = 600
@@ -422,17 +433,28 @@
         this.load.image('portal4', 'assets/theme4/portal.png')
         this.load.image('wall4', 'assets/theme4/wall.png')
 
-        this.load.image('background', 'assets/backgrounds/' + backgroundTexture)
-        this.load.audio('gameMusic', 'assets/audio/' + gameMusic)
+        this.load.image('space.jpg', 'assets/backgrounds/space.jpg')
+        this.load.image('sky.jpg', 'assets/backgrounds/sky.jpg')
+        this.load.image('city_night.jpg', 'assets/backgrounds/city_night.jpg')
+        this.load.image('city_morning.jpg', 'assets/backgrounds/city_morning.jpg')
+
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
+        this.load.audio('maui_beach', 'assets/audio/maui_beach.mp3')
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('secret_service', 'assets/audio/secret_service.mp3')
+        this.load.audio('the_beach', 'assets/audio/the_beach.mp3')
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3')
+        this.load.audio('pressure_point', 'assets/audio/pressure_point.mp3')
       },
 
       create: function() {
-        sound = this.sound.add('gameMusic', { loop: true });
+        sound = this.sound.add(gameMusic, { loop: true });
         sound.volume = 5
-        sound.rate = 0.95
+        sound.rate = 0.85
         sound.play();
 
-        var back = this.add.image(0, 0, 'background')
+        var back = this.add.image(0, 0, backgroundTexture)
         back.setOrigin(0,0)
         back.displayWidth = 800
         back.displayHeight = 600
@@ -678,7 +700,15 @@
       {
         this.load.image('logo', 'assets/logo.png');
         this.load.image('border', 'assets/border.png');
-        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3');
+
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
+        this.load.audio('maui_beach', 'assets/audio/maui_beach.mp3')
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('secret_service', 'assets/audio/secret_service.mp3')
+        this.load.audio('the_beach', 'assets/audio/the_beach.mp3')
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3')
+        this.load.audio('pressure_point', 'assets/audio/pressure_point.mp3')
       },
 
       create: function()
@@ -697,8 +727,8 @@
         cursors = this.input.keyboard.createCursorKeys();
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyControl2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+
         music = this.sound.add('drunken_sailor', { loop: true });
-        console.log(music)
         music.play();
       },
 
@@ -752,9 +782,18 @@
 
       preload: function()
       {
-        this.load.audio('settingsMusic', 'assets/audio/' + settingsMusic);
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
+        this.load.audio('maui_beach', 'assets/audio/maui_beach.mp3')
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('secret_service', 'assets/audio/secret_service.mp3')
+        this.load.audio('the_beach', 'assets/audio/the_beach.mp3')
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3')
+        this.load.audio('pressure_point', 'assets/audio/pressure_point.mp3')
+
         this.load.image('border', 'assets/border.png');
       },
+
       create: function()
       {
         border = this.add.image(400, 315, 'border');
@@ -779,7 +818,7 @@
 
         document.getElementsByClassName('settings')[0].style.visibility = 'visible';
 
-        sound = this.sound.add('settingsMusic', { loop: true });
+        sound = this.sound.add(settingsMusic, { loop: true });
         sound.play();
       },
 
@@ -818,7 +857,15 @@
       preload: function()
       {
         this.load.image('border', 'assets/border.png');
-        this.load.audio('highscoresMusic', 'assets/audio/' + highscoresMusic);
+
+        this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3')
+        this.load.audio('police_car', 'assets/audio/police_car.mp3')
+        this.load.audio('maui_beach', 'assets/audio/maui_beach.mp3')
+        this.load.audio('rake_the_hornpipe', 'assets/audio/rake_the_hornpipe.mp3')
+        this.load.audio('secret_service', 'assets/audio/secret_service.mp3')
+        this.load.audio('the_beach', 'assets/audio/the_beach.mp3')
+        this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3')
+        this.load.audio('pressure_point', 'assets/audio/pressure_point.mp3')
       },
 
       create: function(data)
@@ -835,7 +882,7 @@
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.add.text(170, 50, "Highscores", {fontSize: '75px', color: '#B753FF'})
 
-        sound = this.sound.add('highscoresMusic', { loop: true });
+        sound = this.sound.add(highscoresMusic, { loop: true });
         sound.play();
       },
 
@@ -874,7 +921,7 @@
       type: Phaser.WEBGL,
       width: 800,
       height: 630,
-      scene: [TitleScreen, Settings, MainGame, TwoPlayer, GameOver, HighScore]
+      scene: [TitleScreen, Settings, MainGame, TwoPlayer, GameOver, HighScore],
     };
 
 
@@ -965,8 +1012,9 @@
       top: 530px;
       left: 560px;
     }
-  </style>
 
+  </style>
+<div id='snek'>
   <div class='game_mode'>
     <select id='current_mode'>
       <option value="single-player">Single Player</option>
@@ -1019,36 +1067,37 @@
       <option value="easy">Easy</option>
     </select>
     <select id='game_music_settings'>
-      <option value="police_car.mp3">Police Car</option>
-      <option value="maui_beach.mp3">Maui Beach</option>
-      <option value="pressure_point.mp3">Pressure Point</option>
-      <option value="rake_the_hornpipe.mp3">Rake the Hornpipe</option>
-      <option value="secret_service.mp3">Secret Service</option>
-      <option value="drunken_sailor.mp3">Drunken Sailor</option>
-      <option value="the_beach.mp3">The Beach</option>
-      <option value="wooden_bear.mp3">Wooden Bear</option>
+      <option value="police_car">Police Car</option>
+      <option value="maui_beach">Maui Beach</option>
+      <option value="pressure_point">Pressure Point</option>
+      <option value="rake_the_hornpipe">Rake the Hornpipe</option>
+      <option value="secret_service">Secret Service</option>
+      <option value="drunken_sailor">Drunken Sailor</option>
+      <option value="the_beach">The Beach</option>
+      <option value="wooden_bear">Wooden Bear</option>
     </select>
     <select id='highscores_music_settings'>
-      <option value="secret_service.mp3" >Secret Service</option>
-      <option value="police_car.mp3">Police Car</option>
-      <option value="maui_beach.mp3">Maui Beach</option>
-      <option value="pressure_point.mp3">Pressure Point</option>
-      <option value="rake_the_hornpipe.mp3">Rake the Hornpipe</option>
-      <option value="drunken_sailor.mp3">Drunken Sailor</option>
-      <option value="the_beach.mp3">The Beach</option>
-      <option value="wooden_bear.mp3">Wooden Bear</option>
+      <option value="secret_service" >Secret Service</option>
+      <option value="police_car">Police Car</option>
+      <option value="maui_beach">Maui Beach</option>
+      <option value="pressure_point">Pressure Point</option>
+      <option value="rake_the_hornpipe">Rake the Hornpipe</option>
+      <option value="drunken_sailor">Drunken Sailor</option>
+      <option value="the_beach">The Beach</option>
+      <option value="wooden_bear">Wooden Bear</option>
     </select>
     <select id='settings_music_settings'>
-      <option value="wooden_bear.mp3">Wooden Bear</option>
-      <option value="police_car.mp3">Police Car</option>
-      <option value="maui_beach.mp3">Maui Beach</option>
-      <option value="pressure_point.mp3">Pressure Point</option>
-      <option value="rake_the_hornpipe.mp3">Rake the Hornpipe</option>
-      <option value="secret_service.mp3">Secret Service</option>
-      <option value="drunken_sailor.mp3">Drunken Sailor</option>
-      <option value="the_beach.mp3">The Beach</option>
+      <option value="wooden_bear">Wooden Bear</option>
+      <option value="police_car">Police Car</option>
+      <option value="maui_beach">Maui Beach</option>
+      <option value="pressure_point">Pressure Point</option>
+      <option value="rake_the_hornpipe">Rake the Hornpipe</option>
+      <option value="secret_service">Secret Service</option>
+      <option value="drunken_sailor">Drunken Sailor</option>
+      <option value="the_beach">The Beach</option>
     </select>
   </div>
+</div>
 
 </body>
 
