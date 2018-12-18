@@ -9,11 +9,12 @@
   <script>
     //set textures for each object from 1 - 4,
     //texture files are temporary for testing
-    //purposes.
-    var snakeTexture = 4;
-    var pillTexture = 4;
+    //purposes. Current Game mode will be the "Difficult"
+    //setting when those
+    var snakeTexture = 1;
+    var pillTexture = 2;
     var portalTexture = 3;
-    var wallTexture = 2;
+    var wallTexture = 1;
 
     var MainGame = new Phaser.Class({
       Extends: Phaser.Scene,
@@ -65,13 +66,21 @@
         this.load.image('wall4', 'assets/theme4/wall.png')
         this.load.image('background4', 'assets/theme4/background.png')
 
+        this.load.image('backgroundSpace', 'assets/8BitBack.jpg')
+
         this.load.audio('police_car', 'assets/audio/police_car.mp3')
       },
 
       create: function() {
         sound = this.sound.add('police_car', { loop: true });
         sound.volume = 5
+        sound.rate = 0.95
         sound.play();
+
+        var back = this.add.image(0, 0, 'backgroundSpace')
+        back.setOrigin(0,0)
+        back.displayWidth = 800
+        back.displayHeight = 600
 
         //grid = this.add.grid(0, 0, 800, 600, 20, 20, 0x000000, 1, 0xffffff, 0.5);
         //grid.setOrigin(0);
@@ -161,6 +170,7 @@
           grow: function() {
             var newPart = this.body.create(this.tail.x, this.tail.y, 'snake' + snakeTexture);
             newPart.setOrigin(0);
+
             if(this.speed != 40)
               this.speed--;
             scoreText.setText('Score: ' + snake.score)
@@ -178,7 +188,7 @@
 
               if(!(sound.rate >= 1.5))
                 sound.rate += 0.03;
-              console.log(sound.rate)
+
             }
           },
 
@@ -274,8 +284,8 @@
 
         snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
-        portal = new Portal(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
-        portal2 = new Portal(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        portal = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
+        portal2 = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
         portal.link(portal2);
         portal2.link(portal);
 
@@ -394,9 +404,11 @@
 
       update: function(time, delta){
         if(this.key.isDown){
+          sound1.stop();
           this.scene.start('MainGame');
         }
         if(this.key1.isDown){
+          sound1.stop();
           this.scene.start('TitleScreen');
         }
       }
@@ -415,14 +427,16 @@
 
       preload: function()
       {
-        //this.load.image('logo', 'assets/logo.png');
+        this.load.image('logo', 'assets/logo.png');
+        this.load.image('border', 'assets/border.png');
         this.load.audio('drunken_sailor', 'assets/audio/drunken_sailor.mp3');
       },
 
       create: function()
       {
         //this.add.image('logo', 100, 300);
-        logo = this.add.text(200, 200, "SNAKE", {fontSize:'128px', color:'red'});
+        logo = this.add.image(400, 275, 'logo');
+        border = this.add.image(400, 315, 'border');
         start = this.add.text(140, 315, "Press SPACE to start!", {fontSize:'40px'});
         settings = this.add.text(90, 360, "Press S to access settings", {fontSize:'40px'});
         cursors = this.input.keyboard.createCursorKeys();
@@ -459,13 +473,13 @@
       preload: function()
       {
         this.load.audio('wooden_bear', 'assets/audio/wooden_bear.mp3');
+        this.load.image('border', 'assets/border.png');
       },
-
       create: function()
       {
-        gameOver = this.add.text(200, 200, "Settings", {fontSize: '80px', color: '#f00'})
-        score = this.add.text(220, 270, "Select a theme", {fontSize:'40px'});
-        score = this.add.text(125, 575, "S - Return to Main Menu", {fontSize:'40px'});
+        border = this.add.image(400, 315, 'border');
+        gameOver = this.add.text(200, 50, "Settings", {fontSize: '80px', color: '#f00'})
+        score = this.add.text(125, 550, "S - Return to Main Menu", {fontSize:'40px'});
         keyControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         sound = this.sound.add('wooden_bear', { loop: true });
