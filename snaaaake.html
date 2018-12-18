@@ -125,7 +125,8 @@
       collideWithPortal: function(portal) {
         if (this.headPosition.x === (portal.x / 20) && this.headPosition.y === (portal.y / 20)) {
           //portal.reset();
-           this.headPosition.y = portal.sisterY / 20;
+          this.headPosition.x = portal.sisterX / 20;
+          this.headPosition.y = portal.sisterY / 20;
           return true;
         }
         return false;
@@ -140,7 +141,6 @@
             }
       }
     });
-
     var MainGame = new Phaser.Class({
       Extends: Phaser.Scene,
 
