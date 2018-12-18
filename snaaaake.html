@@ -21,12 +21,12 @@
     var Snake = new Phaser.Class({
       initialize:
 
-        function Snake(scene, x, y) {
+        function Snake(scene, x, y, texture) {
           this.headPosition = new Phaser.Geom.Point(x, y);
 
           this.body = scene.add.group();
 
-          this.head = this.body.create(x * 20, y * 20, 'snake');
+          this.head = this.body.create(x * 20, y * 20, 'snake' + texture);
 
           this.head.setOrigin(0);
 
@@ -154,7 +154,7 @@
         function Pill(scene, x, y) {
           Phaser.GameObjects.Image.call(this, scene)
 
-          this.setTexture('pill');
+          this.setTexture('pill' + pillTexture);
           this.setPosition(x * 20, y * 20);
           this.setOrigin(0);
 
@@ -180,7 +180,7 @@
         function Portal(scene, x, y) {
           Phaser.GameObjects.Image.call(this, scene)
 
-          this.setTexture("portal")
+          this.setTexture("portal" + portalTexture)
           this.setPosition(x * 20, y * 20)
           this.setOrigin(0)
           this.sisterX = 0;
@@ -208,7 +208,7 @@
 
         function Wall(scene, x, y) {
           Phaser.GameObjects.Image.call(this, scene)
-          this.setTexture("wall")
+          this.setTexture("wall" + wallTexture)
           this.setPosition(x * 20, y * 20)
           this.setOrigin(0)
           scene.children.add(this)
@@ -242,10 +242,25 @@
       RIGHT: 3,
 
       preload: function() {
-        this.load.image('snake', 'assets/theme' + snakeTexture + '/snake.png')
-        this.load.image('pill', 'assets/theme' + pillTexture + '/pill.png')
-        this.load.image('portal', 'assets/theme' + portalTexture + '/portal.png')
-        this.load.image('wall', 'assets/theme' + wallTexture + '/wall.png')
+        this.load.image('snake1', 'assets/theme1/snake.png')
+        this.load.image('pill1', 'assets/theme1/pill.png')
+        this.load.image('portal1', 'assets/theme1/portal.png')
+        this.load.image('wall1', 'assets/theme1/wall.png')
+
+        this.load.image('snake2', 'assets/theme2/snake.png')
+        this.load.image('pill2', 'assets/theme2/pill.png')
+        this.load.image('portal2', 'assets/theme2/portal.png')
+        this.load.image('wall2', 'assets/theme2/wall.png')
+
+        this.load.image('snake3', 'assets/theme3/snake.png')
+        this.load.image('pill3', 'assets/theme3/pill.png')
+        this.load.image('portal3', 'assets/theme3/portal.png')
+        this.load.image('wall3', 'assets/theme3/wall.png')
+
+        this.load.image('snake4', 'assets/theme4/snake.png')
+        this.load.image('pill4', 'assets/theme4/pill.png')
+        this.load.image('portal4', 'assets/theme4/portal.png')
+        this.load.image('wall4', 'assets/theme4/wall.png')
 
         this.load.image('background', 'assets/backgrounds/' + backgroundTexture)
         this.load.audio('gameMusic', 'assets/audio/' + gameMusic)
@@ -262,7 +277,7 @@
         back.displayWidth = 800
         back.displayHeight = 600
 
-        snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1, snakeTexture);
         pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         portal = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
         portal2 = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
@@ -373,11 +388,25 @@
       RIGHT: 3,
 
       preload: function() {
-        this.load.image('snake', 'assets/theme' + snakeTexture + '/snake.png')
-        this.load.image('snake2', 'assets/theme' + snake2Texture + '/snake.png')
-        this.load.image('pill', 'assets/theme' + pillTexture + '/pill.png')
-        this.load.image('portal', 'assets/theme' + portalTexture + '/portal.png')
-        this.load.image('wall', 'assets/theme' + wallTexture + '/wall.png')
+        this.load.image('snake1', 'assets/theme1/snake.png')
+        this.load.image('pill1', 'assets/theme1/pill.png')
+        this.load.image('portal1', 'assets/theme1/portal.png')
+        this.load.image('wall1', 'assets/theme1/wall.png')
+
+        this.load.image('snake2', 'assets/theme2/snake.png')
+        this.load.image('pill2', 'assets/theme2/pill.png')
+        this.load.image('portal2', 'assets/theme2/portal.png')
+        this.load.image('wall2', 'assets/theme2/wall.png')
+
+        this.load.image('snake3', 'assets/theme3/snake.png')
+        this.load.image('pill3', 'assets/theme3/pill.png')
+        this.load.image('portal3', 'assets/theme3/portal.png')
+        this.load.image('wall3', 'assets/theme3/wall.png')
+
+        this.load.image('snake4', 'assets/theme4/snake.png')
+        this.load.image('pill4', 'assets/theme4/pill.png')
+        this.load.image('portal4', 'assets/theme4/portal.png')
+        this.load.image('wall4', 'assets/theme4/wall.png')
 
         this.load.image('background', 'assets/backgrounds/' + backgroundTexture)
         this.load.audio('gameMusic', 'assets/audio/' + gameMusic)
@@ -394,8 +423,8 @@
         back.displayWidth = 800
         back.displayHeight = 600
 
-        snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
-        snake2 = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
+        snake = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1, snakeTexture);
+        snake2 = new Snake(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1, snake2Texture);
         pill = new Pill(this, Math.floor(Math.random() * 38) + 1, Math.floor(Math.random() * 28) + 1);
         portal = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
         portal2 = new Portal(this, Math.floor(Math.random() * 20) + 11, Math.floor(Math.random() * 15) + 7);
