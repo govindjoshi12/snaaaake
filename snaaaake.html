@@ -328,7 +328,7 @@
           if(snake.collide(item))
           {
             sound.stop();
-            this.scene.start('GameOver', {text: snake.score});
+            this.scene.start('GameOver', {text: snake.score, gameMode: "MainGame"});
           }
         }, this);
         Phaser.Actions.Call(snake.body.getChildren(), function(item) {
@@ -337,7 +337,7 @@
               if(snake.collide(item))
               {
                   sound.stop();
-                  this.scene.start('GameOver', {text: snake.score});
+                  this.scene.start('GameOver', {text: snake.score, gameMode: "MainGame" });
               }
             }
           }, this);
@@ -460,7 +460,7 @@
           if(snake.collide(item))
           {
             sound.stop();
-            this.scene.start('GameOver', {text: snake2.score});
+            this.scene.start('GameOver', {text: snake2.score, gameMode: "TwoPlayer"});
           }
         }, this);
         Phaser.Actions.Call(snake.body.getChildren(), function(item) {
@@ -469,7 +469,7 @@
               if(snake.collide(item))
               {
                   sound.stop();
-                  this.scene.start('GameOver', {text: snake2.score});
+                  this.scene.start('GameOver', {text: snake2.score, gameMode: "TwoPlayer"});
               }
             }
           }, this);
@@ -498,7 +498,7 @@
           if(snake2.collide(item))
           {
             sound.stop();
-            this.scene.start('GameOver', {text: snake.score});
+            this.scene.start('GameOver', {text: snake.score, gameMode: "TwoPlayer"});
           }
         }, this);
         Phaser.Actions.Call(snake2.body.getChildren(), function(item) {
@@ -507,7 +507,7 @@
               if(snake2.collide(item))
               {
                   sound.stop();
-                  this.scene.start('GameOver', {text: snake.score});
+                  this.scene.start('GameOver', {text: snake.score, gameMode: "TwoPlayer"});
               }
             }
           }, this);
@@ -524,7 +524,7 @@
           Phaser.Scene.call(this, {key: 'GameOver'});
       },
 
-      highscoreList: [],
+      gameMode: null,
 
       preload: function()
       {
@@ -536,25 +536,27 @@
       {
         sound1 = this.sound.add('gnomed');
         sound1.play();
-
-        if(localStorage.getItem("scoreboard") != null)
+        this.gameMode = data.gameMode
+        var highscoreList = []
+        if(localStorage.getItem("scoreboard" + this.gameMode) != null)
         {
-          this.highscoreList = JSON.parse(localStorage.getItem("scoreboard"))
-          if(this.highscoreList.length < 10){
-            this.highscore(data.text, this.highscoreList)
+          highscoreList = JSON.parse(localStorage.getItem("scoreboard" + this.gameMode))
+          if(highscoreList.length < 10){
+            this.highscore(data.text, highscoreList)
           }
-          else if(this.highscoreList[9].score < data.text){
-            this.highscore(data.text, this.highscoreList)
+          else if(highscoreList[9].score < data.text){
+            this.highscore(data.text, highscoreList)
           }
-          localStorage.setItem("scoreboard", JSON.stringify(this.highscoreList))
+          localStorage.setItem("scoreboard" + this.gameMode, JSON.stringify(highscoreList))
         }
         else{
-          this.highscore(data.text, this.highscoreList)
-          localStorage.setItem("scoreboard", JSON.stringify(this.highscoreList))
-          this.highscoreList = JSON.parse(localStorage.getItem("scoreboard"))
+          console.log(highscoreList);
+          this.highscore(data.text, highscoreList)
+          localStorage.setItem("scoreboard" + this.gameMode, JSON.stringify(highscoreList))
+          highscoreList = JSON.parse(localStorage.getItem("scoreboard" + this.gameMode))
         }
 
-        this.displayHighscore(this.highscoreList);
+        this.displayHighscore(highscoreList);
 
         this.add.image(100, 75, 'coop');
         this.add.image(750, 75, 'coop');
@@ -569,7 +571,8 @@
       update: function(time, delta){
         if(this.key.isDown){
           sound1.stop();
-          this.scene.start('MainGame');
+          console.log(this.gameMode);
+          this.scene.start(this.gameMode);
         }
         if(this.key1.isDown){
           sound1.stop();
@@ -578,7 +581,7 @@
         {
           if(this.key.isDown){
             sound1.stop();
-            this.scene.start('MainGame');
+            this.scene.start(this.gameMode);
             }
           if(this.key1.isDown){
             sound1.stop();
@@ -601,6 +604,7 @@
       },
 
       displayHighscore: function(scoreboard){
+        //console.log(scoreboard)
         for(i = 0; i < scoreboard.length; i++)
         {
           if(i === 0)
@@ -664,11 +668,11 @@
 
       update: function()
       {
+        var mode = document.getElementById('current_mode').value;
         if(cursors.space.isDown)
         {
           sound.stop();
           document.getElementsByClassName('game_mode')[0].style.visibility = 'hidden';
-          var mode = document.getElementById('current_mode').value;
           console.log(mode)
           if(mode === "single-player")
           {
@@ -689,7 +693,13 @@
         {
           sound.stop();
           document.getElementsByClassName('game_mode')[0].style.visibility = 'hidden';
-          this.scene.start('HighScore')
+          if(mode === "single-player")
+            this.scene.start('HighScore', {gameMode: "MainGame"})
+          else if(mode === "1v1")
+            this.scene.start('HighScore', {gameMode: "TwoPlayer"})
+          else {
+            this.scene.start('HighScore', {gameMode: "Other"})
+          }
         }
       }
     })
@@ -775,12 +785,12 @@
         this.load.audio('highscoresMusic', 'assets/audio/' + highscoresMusic);
       },
 
-      create: function()
+      create: function(data)
       {
         border = this.add.image(400, 315, 'border');
-        if(JSON.parse(localStorage.getItem("scoreboard")) != null)
+        if(JSON.parse(localStorage.getItem("scoreboard" + data.gameMode)) != null)
         {
-          this.displayHighscore(JSON.parse(localStorage.getItem("scoreboard")))
+          this.displayHighscore(JSON.parse(localStorage.getItem("scoreboard" + data.gameMode)))
         }
         else {
           this.add.text(225, 150, "There are no scores to list...", {fontSize: '20px'})
