@@ -19,14 +19,18 @@
     var highscoresMusic = 'secret_service.mp3'
 
     var Snake = new Phaser.Class({
+      texture: null,
       initialize:
 
+
+
         function Snake(scene, x, y, texture) {
+          this.texture = texture;
           this.headPosition = new Phaser.Geom.Point(x, y);
 
           this.body = scene.add.group();
 
-          this.head = this.body.create(x * 20, y * 20, 'snake' + texture);
+          this.head = this.body.create(x * 20, y * 20, 'snake' + this.texture);
 
           this.head.setOrigin(0);
 
@@ -43,6 +47,8 @@
           this.heading = null;
           this.direction = null;
         },
+
+
 
       update: function(time) {
         if (time >= this.moveTime) {
@@ -100,7 +106,7 @@
       },
 
       grow: function() {
-        var newPart = this.body.create(this.tail.x, this.tail.y, 'snake');
+        var newPart = this.body.create(this.tail.x, this.tail.y, 'snake' + this.texture);
         newPart.setOrigin(0);
 
         if(this.speed != 40)
