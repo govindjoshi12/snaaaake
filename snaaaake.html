@@ -133,7 +133,7 @@
 
 
           if(!(sound.rate >= 7))
-            sound.rate += 0.1;
+            sound.rate += 0.025;
 
         }
       },
@@ -930,6 +930,10 @@
   </script>
 
   <style>
+    body, html {
+      background-color: black;
+    }
+
     .game_mode
     {
       position: absolute;
@@ -1019,8 +1023,6 @@
     <select id='current_mode'>
       <option value="single-player">Single Player</option>
       <option value="1v1">1 v 1</option>
-      <option value="co-op">4 Player Co-op</option>
-      <option value="map-editor">Map Editor</option>
     </select>
   </div>
 
@@ -1062,9 +1064,7 @@
       <option value="city_night.jpg">City 2</option>
     </select>
     <select id='difficulty_settings'>
-      <option value="hard">Hard</option>
-      <option value="med">Medium</option>
-      <option value="easy">Easy</option>
+      <option value="hard">Git Gud</option>
     </select>
     <select id='game_music_settings'>
       <option value="police_car">Police Car</option>
